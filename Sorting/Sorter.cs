@@ -32,6 +32,23 @@ namespace Sorting
         }
 
         protected SortPerformance currentSort;
+        public SortPerformance BulkSort(Func<int, T[]> randArr,int runs=1000,int size = 1000)
+        {
+            var perfs = new SortPerformance[runs];
+            for (int i = 0; i < runs; i++)
+            {
+                this.values = randArr(size);
+                perfs[i] = this.Sort();
+                perfs[i].Stopped();
+            }
+
+            return new SortPerformance()
+            {
+                reads = (int)perfs.Average(x => x.reads),
+                writes = (int)perfs.Average(x => x.writes),
+                ms = (int)perfs.Average(x => x.ms)
+            };
+        }
         public abstract SortPerformance Sort();
         protected Func<T, int> selector;
         protected Func<int, int, int> comparator;
@@ -59,6 +76,7 @@ namespace Sorting
         public void Stopped()
         {
             end = DateTime.Now;
+            ms = (int)(end - start).TotalMilliseconds;
         }
 
         public SortPerformance()
