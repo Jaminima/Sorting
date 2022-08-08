@@ -32,14 +32,21 @@ namespace Sorting
         }
 
         protected SortPerformance currentSort;
-        public SortPerformance BulkSort(Func<int, T[]> randArr,int runs=1000,int size = 1000)
+        public SortPerformance BulkSort(T[][] arr,int runs=1000)
         {
-            var perfs = new SortPerformance[runs];
-            for (int i = 0; i < runs; i++)
+            int valCount = arr.GetLength(0);
+            var perfs = new SortPerformance[valCount*runs];
+            for (int i = 0; i < valCount; i++)
             {
-                this.values = randArr(size);
-                perfs[i] = this.Sort();
-                perfs[i].Stopped();
+                this.values = arr[i];
+                for (int j = 0; j < runs; j++)
+                {
+                    int idx = (i * runs) + j;
+                    perfs[idx] = new SortPerformance();
+                    perfs[idx].Start();
+                    perfs[idx] = this.Sort();
+                    perfs[idx].Stopped();
+                }
             }
 
             return new SortPerformance()
@@ -71,6 +78,11 @@ namespace Sorting
         public TimeSpan elapsed
         {
             get { return end - start; }
+        }
+
+        public void Start()
+        {
+            start = DateTime.Now;
         }
 
         public void Stopped()
