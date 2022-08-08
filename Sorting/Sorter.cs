@@ -58,9 +58,13 @@ namespace Sorting
         }
         public abstract SortPerformance Sort();
         protected Func<T, int> selector;
-        protected Func<int, int, int> comparator;
+        protected Func<T, T, int> comparator;
 
-        public Sorter(T[] values, Func<T, int> selector, Func<int, int, int> comparator)
+        public Sorter(T[] values, Func<T, int> selector) : this(values, selector, (l, r) => selector(r) > selector(l) ? 1 : (selector(l) == selector(r)) ? 0 : -1)
+        {
+        }
+
+        public Sorter(T[] values, Func<T, int> selector, Func<T, T, int> comparator)
         {
             this.values = values;
             this.selector = selector;
