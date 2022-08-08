@@ -31,7 +31,6 @@ namespace Sorting
                 }
                 iRight++;
             }
-            currentSort.Stopped();
             return currentSort;
         }
     }

@@ -86,7 +86,6 @@ namespace Sorting
                 siftDown(0, end);
             }
 
-            currentSort.Stopped();
             return currentSort;
         }
     }

@@ -15,7 +15,6 @@ namespace Sorting
         public override SortPerformance Sort()
         {
             this.values = Sublist(0, values.Length-1);
-            currentSort.Stopped();
             return currentSort;
         }
 
